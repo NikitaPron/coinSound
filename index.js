@@ -1,22 +1,15 @@
-const app = document.querySelector('#app');
 const price = document.querySelector('#price');
+
 let needPrice;
 let upOrDown;
 
-let currentCoin = 'ltcusdt';
-let arrCoins = [
-    'btcusdt', 'ltcusdt', 'atomusdt', 'ftmusdt', 'dogeusdt', 'lunausdt'
-]
+let needCoin = 'ltcusdt';
 let stream;
 
 
-
-
-fillApp()
-
-
-function startStream(coin) {
-    stream = new WebSocket(`wss://stream.binance.com:9443/ws/${coin}@bookTicker`);
+function startStream() {
+    if(stream) stream.close();
+    stream = new WebSocket(`wss://stream.binance.com:9443/ws/${needCoin}@bookTicker`);
     stream.onmessage = function(event) {
         let data = JSON.parse(event.data);
         console.log(data.b)
@@ -27,57 +20,24 @@ function startStream(coin) {
 
 
 
-
-function fillApp() {
-    arrCoins.forEach(coin => {
-        let divCoin = document.createElement('div');
-        divCoin.innerHTML = coin;
-        app.append(divCoin);
-        divCoin.addEventListener('click', setCurrent);
-    })
-}
-
-function setCurrent() {
-    if(stream) stream.close();
-    clearSelection();
-    this.classList.add('selected');
-
-
-    changeCurrentCoin(this.innerHTML);
-    setTimeout(() => startStream(currentCoin), 1000);
-}
-
-function clearSelection() {
-    Array.from(app.children).forEach(div => div.classList.remove('selected'));
-}
-
-function changeCurrentCoin(newCoin) {
-    currentCoin = newCoin;
-}
-
-
-
 function showPrice(pr) {
-    price.innerHTML = `${currentCoin.toUpperCase()}: ${+pr}`;
+    let percent = ((needPrice - pr) / pr * 100).toFixed(3);
+    price.innerHTML = `${needCoin.toUpperCase()}: ${+pr} (до цены: ${percent}%)`;
 }
 
 
-
-document.addEventListener('keydown', (event) => {
-    if(event.key === 'q') {
-        stream.close();
-    }
-
-    if(event.key === 'Enter') {
-        setNeedPrice()
-    }
-})
-
+// INPUT SETTERS
+function setNeedCoin() {
+    const input = document.querySelector('#needCoin');
+    needCoin = input.value.toLowerCase();
+}
 
 function setNeedPrice() {
     const input = document.querySelector('#needPrice');
     needPrice = parseFloat(input.value);
 }
+// INPUT SETTERS
+
 
 
 function checkWatching(prc) {
@@ -92,8 +52,6 @@ function checkWatching(prc) {
 
 }
 
-
-
 let audio = new Audio('sound.wav');
 function playAudio() {
     audio.play();
@@ -101,6 +59,31 @@ function playAudio() {
 
 
 
+
+function clearAll() {
+    if(stream) {
+        stream.close();
+    }
+    needPrice = '';
+    needCoin = '';
+    Array.from(document.querySelectorAll('input')).forEach(inp => inp.value = '');
+    price.innerHTML = '';
+}
+
+
+// KEYHANDLERS
+
+
+document.addEventListener('keydown', (event) => {
+    if(event.key === 'F2') {
+        clearAll()
+    }
+
+    if(event.key === 'Enter') {
+        setNeedPrice();
+        setNeedCoin();
+    }
+})
 
 document.addEventListener('click', (event) => {
     if(event.target.classList.contains('up')) {
@@ -115,3 +98,13 @@ document.addEventListener('click', (event) => {
         upOrDown = 'down';
     }
 })
+
+
+const btnStart = document.querySelector('#start');
+btnStart.addEventListener('click', () => {
+    setNeedPrice();
+    setNeedCoin();
+    startStream();
+});
+
+// KEYHANDLERS

@@ -8,17 +8,21 @@
     <title>Document</title>
 </head>
 <body>
-    <div class="hit">Для дробных чисел используйте ТОЧКУ в качестве разделителя</div>
+    <div class="hotKeys">F2 - Остановить и очистить</div>
 
     <div id="app">
+        <div class="hit">Для дробных чисел используйте ТОЧКУ в качестве разделителя</div>
+        <input type="text" id="needCoin" placeholder="Введите пару. Например: ltcusdt">
+        <input type="text" id="needPrice" placeholder="Введите цену. Например: 123.8">
+        <div class="btns">
+            <div class="up">Жду вверх</div>
+            <div class="down">Жду вниз</div>
+        </div>
+        <div id="start">Старт</div>
+        <div id="price"></div>
     </div>
 
-    <div id="price"></div>
-    <div class="btns">
-        <div class="up">Жду вверх</div>
-        <div class="down">Жду вниз</div>
-    </div>
-    <input type="text" id="needPrice">
+
     <script src="index.js"></script>
 </body>
 </html>
