@@ -49,7 +49,7 @@ body {
 }
 
 .activeUpDown {
-    background-color: rgb(49, 235, 64);
+    background-color: rgb(116, 219, 124);
 }
 
 
@@ -76,8 +76,9 @@ input::placeholder {
 .btnDeleteSignal {
     border: 0;
     padding: 10px 30px;
-    content: 'Delete';
+    font-size: 18px;
     background-color: rgb(236, 108, 61);
+    border: 1px solid black;
     cursor: pointer;
 }
 
