@@ -18,13 +18,6 @@ body {
     background-color: rgb(235, 117, 117);
 }
 
-
-
-#price {
-    font-size: 45px;
-    color: rgb(117, 117, 218);
-}
-
 #needPrice, #needCoin {
     font-size: 45px;
     color: rgb(80, 224, 75);
@@ -66,4 +59,28 @@ body {
 
 input::placeholder {
     font-size: 20px;
+}
+
+
+.signals {
+    display: flex;
+    flex-direction: column;
+    font-size: 45px;
+    color: rgb(117, 117, 218);
+}
+
+
+.signal {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.btnDelete {
+    border: 0;
+    padding: 10px 30px;
+    content: 'Delete';
+    background-color: rgb(236, 108, 61);
+    cursor: pointer;
 }

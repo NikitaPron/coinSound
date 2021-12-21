@@ -1,73 +1,110 @@
-const price = document.querySelector('#price');
-
-let needPrice;
-let upOrDown;
-
-let needCoin = 'ltcusdt';
-let stream;
+let signals = [];
+let audio = new Audio('sound.wav');
 
 
-function startStream() {
-    if(stream) stream.close();
-    stream = new WebSocket(`wss://stream.binance.com:9443/ws/${needCoin}@bookTicker`);
+function startStream(coin, updateFunc) {
+    stream = new WebSocket(`wss://stream.binance.com:9443/ws/${coin}@bookTicker`);
     stream.onmessage = function(event) {
         let data = JSON.parse(event.data);
-        console.log(data.b)
-        showPrice(data.b);
-        checkWatching(data.b);
+        let bestPrice = data.b;
+        console.log(data);
+        updateFunc(bestPrice);
+    }
+    return stream;
+}
+
+function createSignal() {
+
+    let obj = {
+        coin: getNeedCoin(),
+        currPrice: 0,
+        needPrice: getNeedPrice(),
+        upOrDown: getUpOrDown(),
+        div: createDiv(signals.length),
+        update: '',
+        stream: '',
+    }
+    obj.update = function(bestPrice) {
+        obj.currPrice = bestPrice;
+        updateUI(obj.div, obj.currPrice, obj.needPrice, obj.coin);
+        checkWatching(obj.upOrDown, obj.currPrice, obj.needPrice);
+    },
+    obj.stream = startStream(obj.coin, obj.update);
+
+    signals.push(obj);
+}
+
+
+
+function createDiv(index) {
+    const signal = document.createElement('div');
+    signal.classList.add('signal');
+
+    const signalText = document.createElement('div');
+    signalText.classList.add('signalText');
+
+    const btnDelete = document.createElement('button');
+    btnDelete.classList.add('btnDelete');
+    btnDelete.innerHTML = 'Delete';
+
+    btnDelete.addEventListener('click', () => {
+        signals[index].stream.close();
+        signals[index] = '';
+        signal.remove();
+    })
+
+    document.querySelector('.signals').append(signal);
+    signal.append(signalText, btnDelete);
+
+    return signalText;
+}
+
+
+function updateUI(div, prc, needPrice, needCoin) {
+    let percent = ((needPrice - prc) / prc * 100).toFixed(3);
+    div.innerHTML = `${needCoin.toUpperCase()}: ${+prc} (до цены: ${percent}%)`;
+}
+
+
+// INPUT SETTERS
+function getNeedCoin() {
+    const input = document.querySelector('#needCoin');
+    return input.value.toLowerCase();
+}
+
+function getNeedPrice() {
+    const input = document.querySelector('#needPrice');
+    return parseFloat(input.value);
+}
+
+function getUpOrDown() {
+    let text = document.querySelector('.active').innerHTML;
+    if(text === 'Жду вверх') {
+        return 'up';
+    } else {
+        return 'down';
     }
 }
-
-
-
-function showPrice(pr) {
-    let percent = ((needPrice - pr) / pr * 100).toFixed(3);
-    price.innerHTML = `${needCoin.toUpperCase()}: ${+pr} (до цены: ${percent}%)`;
-}
-
-
-// INPUT SETTERS
-function setNeedCoin() {
-    const input = document.querySelector('#needCoin');
-    needCoin = input.value.toLowerCase();
-}
-
-function setNeedPrice() {
-    const input = document.querySelector('#needPrice');
-    needPrice = parseFloat(input.value);
-}
 // INPUT SETTERS
 
 
 
-function checkWatching(prc) {
+function checkWatching(upOrDown, prc, needPrice) {
     if(upOrDown === 'up' && prc >= needPrice) {
-        playAudio();
+        audio.play();
     }
 
     if(upOrDown === 'down' && prc <= needPrice) {
-        playAudio();
+        audio.play();
     }
-
-
 }
-
-let audio = new Audio('sound.wav');
-function playAudio() {
-    audio.play();
-}
-
-
 
 
 function clearAll() {
-    if(stream) {
-        stream.close();
-    }
-    needPrice = '';
-    needCoin = '';
+    signals.forEach(signal => signal.stream.close());
+    signals = [];
     Array.from(document.querySelectorAll('input')).forEach(inp => inp.value = '');
-    price.innerHTML = '';
+    document.querySelector('.signals').innerHTML = '';
 }
 
 
@@ -78,33 +115,24 @@ document.addEventListener('keydown', (event) => {
     if(event.key === 'F2') {
         clearAll()
     }
-
-    if(event.key === 'Enter') {
-        setNeedPrice();
-        setNeedCoin();
-    }
 })
 
 document.addEventListener('click', (event) => {
     if(event.target.classList.contains('up')) {
         document.querySelector('.down').classList.remove('active');
         event.target.classList.add('active');
-        upOrDown = 'up';
     }
 
     if(event.target.classList.contains('down')) {
         document.querySelector('.up').classList.remove('active');
         event.target.classList.add('active');
-        upOrDown = 'down';
     }
 })
 
 
 const btnStart = document.querySelector('#start');
 btnStart.addEventListener('click', () => {
-    setNeedPrice();
-    setNeedCoin();
-    startStream();
+    createSignal();
 });
 
 // KEYHANDLERS
