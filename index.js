@@ -7,7 +7,6 @@ function startStream(coin, updateFunc) {
     stream.onmessage = function(event) {
         let data = JSON.parse(event.data);
         let bestPrice = data.b;
-        console.log(data);
         updateFunc(bestPrice);
     }
     return stream;
