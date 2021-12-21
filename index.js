@@ -26,7 +26,10 @@ function createSignal() {
     obj.update = function(bestPrice) {
         obj.currPrice = bestPrice;
         updateUI(obj.div, obj.currPrice, obj.needPrice, obj.coin);
-        checkWatching(obj.upOrDown, obj.currPrice, obj.needPrice);
+        if(checkWatching(obj.upOrDown, obj.currPrice, obj.needPrice)) {
+            audio.play();
+            obj.div.classList.add('completedSignal');
+        };
     },
     obj.stream = startStream(obj.coin, obj.update);
 
@@ -37,13 +40,13 @@ function createSignal() {
 
 function createDiv(index) {
     const signal = document.createElement('div');
-    signal.classList.add('signal');
+    signal.classList.add('signalDiv');
 
     const signalText = document.createElement('div');
     signalText.classList.add('signalText');
 
     const btnDelete = document.createElement('button');
-    btnDelete.classList.add('btnDelete');
+    btnDelete.classList.add('btnDeleteSignal');
     btnDelete.innerHTML = 'Delete';
 
     btnDelete.addEventListener('click', () => {
@@ -77,7 +80,7 @@ function getNeedPrice() {
 }
 
 function getUpOrDown() {
-    let text = document.querySelector('.active').innerHTML;
+    let text = document.querySelector('.activeUpDown').innerHTML;
     if(text === 'Жду вверх') {
         return 'up';
     } else {
@@ -90,12 +93,14 @@ function getUpOrDown() {
 
 function checkWatching(upOrDown, prc, needPrice) {
     if(upOrDown === 'up' && prc >= needPrice) {
-        audio.play();
+        return true;
     }
 
     if(upOrDown === 'down' && prc <= needPrice) {
-        audio.play();
+        return true;
     }
+
+    return false;
 }
 
 
@@ -117,19 +122,19 @@ document.addEventListener('keydown', (event) => {
 })
 
 document.addEventListener('click', (event) => {
-    if(event.target.classList.contains('up')) {
-        document.querySelector('.down').classList.remove('active');
-        event.target.classList.add('active');
+    if(event.target.classList.contains('btnDown')) {
+        document.querySelector('.btnUp').classList.remove('activeUpDown');
+        event.target.classList.add('activeUpDown');
     }
 
-    if(event.target.classList.contains('down')) {
-        document.querySelector('.up').classList.remove('active');
-        event.target.classList.add('active');
+    if(event.target.classList.contains('btnUp')) {
+        document.querySelector('.btnDown').classList.remove('activeUpDown');
+        event.target.classList.add('activeUpDown');
     }
 })
 
 
-const btnStart = document.querySelector('#start');
+const btnStart = document.querySelector('#btnStart');
 btnStart.addEventListener('click', () => {
     createSignal();
 });

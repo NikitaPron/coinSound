@@ -28,12 +28,12 @@ body {
 }
 
 
-.btns {
+.btnsUpDown {
     display: flex;
     gap: 30px;
 }
 
-.up, .down, #start {
+.btnUp, .btnDown, #btnStart {
     font-size: 20px;
     color: #111;
     background: rgb(243, 183, 183);
@@ -43,16 +43,16 @@ body {
 }
 
 
-#start {
+#btnStart {
     width: 100px;
     text-align: center;
     background: rgb(119, 121, 221);
 }
-#start:hover {
+#btnStart:hover {
     background-color: rgb(88, 91, 221);
 }
 
-.active {
+.activeUpDown {
     background-color: rgb(49, 235, 64);
 }
 
@@ -70,17 +70,21 @@ input::placeholder {
 }
 
 
-.signal {
+.signalDiv {
     display: flex;
     gap: 20px;
     align-items: center;
     justify-content: space-between;
 }
 
-.btnDelete {
+.btnDeleteSignal {
     border: 0;
     padding: 10px 30px;
     content: 'Delete';
     background-color: rgb(236, 108, 61);
     cursor: pointer;
+}
+
+.completedSignal {
+    background-color:rgb(230, 142, 107);
 }
