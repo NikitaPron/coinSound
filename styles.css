@@ -129,11 +129,12 @@ input::placeholder {
 
 @media only screen and (max-width: 600px) {
     #needPrice, #needCoin {
+        width: 90%;
         font-size: 29px;
     }
 
     .signals {
-        font-size: 29px;
+        font-size: 20px;
     }
 
     input::placeholder {
@@ -141,6 +142,7 @@ input::placeholder {
     }
 
     .allPrices {
+        width: 90%;
         justify-content: center;
         flex-direction: column-reverse;
     }
