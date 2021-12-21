@@ -14,10 +14,6 @@ body {
     gap: 20px;
 }
 
-.selected {
-    background-color: rgb(235, 117, 117);
-}
-
 #needPrice, #needCoin {
     font-size: 45px;
     color: rgb(80, 224, 75);
@@ -96,6 +92,7 @@ input::placeholder {
 .allPrices {
     display: flex;
     gap: 50px;
+    flex-wrap: wrap;
 }
 
 .tickerDiv {
@@ -126,4 +123,25 @@ input::placeholder {
 .percentDown {
     color: rgb(223, 35, 35);
     font-weight: bold;
+}
+
+
+
+@media only screen and (max-width: 600px) {
+    #needPrice, #needCoin {
+        font-size: 29px;
+    }
+
+    .signals {
+        font-size: 29px;
+    }
+
+    input::placeholder {
+        font-size: 15px;
+    }
+
+    .allPrices {
+        justify-content: center;
+        flex-direction: column-reverse;
+    }
 }
