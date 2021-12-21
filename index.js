@@ -1,13 +1,16 @@
+import {my} from './myCoins.js';
+
 let signals = [];
 let audio = new Audio('sound.wav');
 
 
 function startStream(coin, updateFunc) {
-    stream = new WebSocket(`wss://stream.binance.com:9443/ws/${coin}@bookTicker`);
+    const stream = new WebSocket(`wss://stream.binance.com:9443/ws/${coin}@bookTicker`);
     stream.onmessage = function(event) {
         let data = JSON.parse(event.data);
         let bestPrice = data.b;
         updateFunc(bestPrice);
+        console.log(coin);
     }
     return stream;
 }
@@ -105,7 +108,11 @@ function checkWatching(upOrDown, prc, needPrice) {
 
 
 function clearAll() {
-    signals.forEach(signal => signal.stream.close());
+    signals.forEach(signal => {
+        if(signal !== '') {
+            signal.stream.close();
+        }
+    });
     signals = [];
     Array.from(document.querySelectorAll('input')).forEach(inp => inp.value = '');
     document.querySelector('.signals').innerHTML = '';
@@ -140,3 +147,91 @@ btnStart.addEventListener('click', () => {
 });
 
 // KEYHANDLERS
+
+
+
+const allPrices = document.querySelector('.allPrices');
+
+const allDiv = document.createElement('div');
+allPrices.append(allDiv);
+
+const myDiv = document.createElement('div');
+allPrices.append(myDiv);
+
+const arr = [];
+let saves = [];
+const stream = new WebSocket(`wss://stream.binance.com:9443/ws/!bookTicker`);
+stream.onmessage = function(event) {
+    const data = JSON.parse(event.data);
+    if(data.s.endsWith('USDT')) {
+        const isHave = arr.findIndex(item => item.ticker === data.s);
+        if( isHave === -1) {
+            arr.push({
+                ticker: data.s,
+                price: +data.b,
+                proc: '',
+            })
+        } else {
+            arr[isHave].price = +data.b;
+        }
+    }
+}
+
+setInterval(savePrices, 60000);
+
+function savePrices() {
+    arr.forEach(item => {
+        let old = saves.find(oldy => oldy.ticker === item.ticker);
+        if(old !== undefined) {
+            let procent = ((old.price - item.price) / item.price * 100).toFixed(2);
+            item.proc = procent;
+        }
+    })
+
+    saves = arr.map(a => ({...a}));
+}
+
+setInterval(showAll, 2000);
+
+function showAll() {
+    arr.sort((a, b) => a.ticker > b.ticker ? 1 : -1);
+    allDiv.innerHTML = '';
+    myDiv.innerHTML = '';
+
+    arr.forEach((item, index) => {
+        createTickerDiv(item, index);
+    })
+}
+
+
+function createTickerDiv(ticker, index) {
+    const tickerDiv = document.createElement('div');
+    tickerDiv.classList.add('tickerDiv');
+
+    const tickerText = document.createElement('div');
+    tickerText.classList.add('ticker');
+    tickerText.innerHTML = index+1 + '. ' + ticker.ticker;
+
+    const priceText = document.createElement('div');
+    priceText.classList.add('price');
+    priceText.innerHTML = ticker.price;
+
+    const percentText = document.createElement('div');
+    percentText.innerHTML = ticker.proc;
+    percentText.classList.add(ticker.proc > 0 ? 'percentUp' : 'percentDown');
+    
+
+    tickerDiv.append(tickerText, priceText, percentText);
+
+
+
+    if(my.includes(ticker.ticker)) {
+        myDiv.append(tickerDiv);
+    } else {
+        allDiv.append(tickerDiv);
+    }
+}
+
+document.addEventListener('keydown', (event) => {
+    if(event.key === 'q') stream.close();
+})

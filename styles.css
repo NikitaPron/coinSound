@@ -88,3 +88,42 @@ input::placeholder {
 .completedSignal {
     background-color:rgb(230, 142, 107);
 }
+
+/*---------------------------------------------------------*/
+
+
+
+.allPrices {
+    display: flex;
+    gap: 50px;
+}
+
+.tickerDiv {
+    width: 400px;
+    display: flex;
+    gap: 15px;
+    border: 1px solid grey;
+    justify-content: flex-start;
+}
+
+.ticker {
+    font-weight: bold;
+    width: 200px;
+}
+
+
+.price {
+    font-size: 20px;
+    flex-grow: 1;
+}
+
+.percentUp {
+    font-weight: bold;
+    font-size: 18px;
+    color: rgb(44, 233, 44);
+}
+
+.percentDown {
+    color: rgb(223, 35, 35);
+    font-weight: bold;
+}
