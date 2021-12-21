@@ -161,9 +161,12 @@ allPrices.append(myDiv);
 const arr = [];
 let saves = [];
 const stream = new WebSocket(`wss://stream.binance.com:9443/ws/!bookTicker`);
+
+let functionSort = sortAlphabet;
+
 stream.onmessage = function(event) {
     const data = JSON.parse(event.data);
-    if(data.s.endsWith('USDT')) {
+    if(data.s.endsWith('USDT') && !data.s.endsWith('UPUSDT') && !data.s.endsWith('DOWNUSDT')) {
         const isHave = arr.findIndex(item => item.ticker === data.s);
         if( isHave === -1) {
             arr.push({
@@ -194,7 +197,8 @@ function savePrices() {
 setInterval(showAll, 2000);
 
 function showAll() {
-    arr.sort((a, b) => a.ticker > b.ticker ? 1 : -1);
+    functionSort();
+
     allDiv.innerHTML = '';
     myDiv.innerHTML = '';
 
@@ -205,6 +209,7 @@ function showAll() {
 
 
 function createTickerDiv(ticker, index) {
+
     const tickerDiv = document.createElement('div');
     tickerDiv.classList.add('tickerDiv');
 
@@ -224,14 +229,31 @@ function createTickerDiv(ticker, index) {
     tickerDiv.append(tickerText, priceText, percentText);
 
 
-
-    if(my.includes(ticker.ticker)) {
-        myDiv.append(tickerDiv);
-    } else {
-        allDiv.append(tickerDiv);
-    }
+    my.includes(ticker.ticker) ? myDiv.append(tickerDiv) : allDiv.append(tickerDiv);
 }
+
 
 document.addEventListener('keydown', (event) => {
     if(event.key === 'q') stream.close();
+    if(event.key === 'h') functionSort = sortHigh;
+    if(event.key === 'v') functionSort = sortMoving;
+    if(event.key === 'l') functionSort = sortLow;
+    if(event.key === 'a') functionSort = sortAlphabet;
 })
+
+
+function sortAlphabet() {
+    arr.sort((a, b) => a.ticker > b.ticker ? 1 : -1);
+}
+
+function sortMoving() {
+    arr.sort((a, b) => Math.abs(b.proc) - Math.abs(a.proc));
+}
+
+function sortHigh() {
+    arr.sort((a, b) => b.proc - a.proc);
+}
+
+function sortLow() {
+    arr.sort((a, b) => a.proc - b.proc);
+}
