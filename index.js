@@ -140,6 +140,24 @@ document.addEventListener('click', (event) => {
     }
 })
 
+document.addEventListener('click', (event) => {
+    if(event.target.classList.contains('ticker')) {
+        const input = document.querySelector('#needCoin');
+        input.value = trimNumberOfTicker(event.target.innerHTML);
+    }
+        
+
+    if(event.target.classList.contains('price')) {
+        const input = document.querySelector('#needPrice');
+        input.value = +event.target.innerHTML;
+    }
+})
+
+
+function trimNumberOfTicker(ticker) {
+    let index = ticker.split('').findIndex(item => item === '.');
+    return ticker.slice(index + 2);
+}
 
 const btnStart = document.querySelector('#btnStart');
 btnStart.addEventListener('click', () => {
@@ -147,6 +165,4 @@ btnStart.addEventListener('click', () => {
 });
 
 // KEYHANDLERS
-
-
 createTable();

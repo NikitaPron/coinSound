@@ -107,12 +107,22 @@ input::placeholder {
 .ticker {
     font-weight: bold;
     width: 200px;
+    cursor: pointer;
+}
+
+.ticker:hover {
+    background: rgb(151, 175, 221);
 }
 
 
 .price {
     font-size: 20px;
     flex-grow: 1;
+    cursor: pointer;
+}
+
+.price:hover {
+    background: rgb(151, 175, 221);
 }
 
 .percentUp {
