@@ -1,0 +1,38 @@
+.allVolumes {
+    width: 400px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    color: rgb(87, 105, 105);
+}
+
+
+.volumeDiv {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid gray;
+}
+
+.priceV {
+    font-weight: bold;
+    color: rgb(35, 219, 106);
+    font-size: 18px;
+    flex-grow: 1;
+}
+
+.timeV {
+    font-weight: bold;
+    color: rgb(27, 25, 136);
+}
+
+.volumeV {
+    width: 210px;
+    font-weight: bold;
+    color: rgb(238, 76, 76);
+    font-size: 18px;
+}
+

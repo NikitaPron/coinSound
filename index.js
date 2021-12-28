@@ -1,74 +1,20 @@
-import {createTable} from './allCoins.js';
+import {AllCoins} from './AllCoins/AllCoins.js';
+import {findBigVolume} from './FindBigVolumes/findBigVolume.js';
+import { Signal } from './Signal/Signal.js';
+import * as storage from './storage.js';
 
-let signals = [];
-let audio = new Audio('sound.wav');
 
-
-function startStream(coin, updateFunc) {
-    const stream = new WebSocket(`wss://stream.binance.com:9443/ws/${coin}@bookTicker`);
-    stream.onmessage = function(event) {
-        let data = JSON.parse(event.data);
-        let bestPrice = data.b;
-        updateFunc(bestPrice);
-        console.log(coin);
-    }
-    return stream;
-}
+const signals = [];
 
 function createSignal() {
-
-    let obj = {
-        coin: getNeedCoin(),
-        currPrice: 0,
-        needPrice: getNeedPrice(),
-        upOrDown: getUpOrDown(),
-        div: createDiv(signals.length),
-        update: '',
-        stream: '',
-    }
-    obj.update = function(bestPrice) {
-        obj.currPrice = bestPrice;
-        updateUI(obj.div, obj.currPrice, obj.needPrice, obj.coin);
-        if(checkWatching(obj.upOrDown, obj.currPrice, obj.needPrice)) {
-            audio.play();
-            obj.div.classList.add('completedSignal');
-        };
-    },
-    obj.stream = startStream(obj.coin, obj.update);
-
-    signals.push(obj);
+    const signal = new Signal(getNeedCoin(), getNeedPrice(), getComment());
+    signals.push({
+        coin: signal.coin,
+        needPrice: signal.needPrice,
+        comment: signal.comment,
+    });
 }
 
-
-
-function createDiv(index) {
-    const signal = document.createElement('div');
-    signal.classList.add('signalDiv');
-
-    const signalText = document.createElement('div');
-    signalText.classList.add('signalText');
-
-    const btnDelete = document.createElement('button');
-    btnDelete.classList.add('btnDeleteSignal');
-    btnDelete.innerHTML = 'Delete';
-
-    btnDelete.addEventListener('click', () => {
-        signals[index].stream.close();
-        signals[index] = '';
-        signal.remove();
-    })
-
-    document.querySelector('.signals').append(signal);
-    signal.append(signalText, btnDelete);
-
-    return signalText;
-}
-
-
-function updateUI(div, prc, needPrice, needCoin) {
-    let percent = ((needPrice - prc) / prc * 100).toFixed(3);
-    div.innerHTML = `${needCoin.toUpperCase()}: ${+prc} (до цены: ${percent}%)`;
-}
 
 
 // INPUT SETTERS
@@ -79,64 +25,27 @@ function getNeedCoin() {
 
 function getNeedPrice() {
     const input = document.querySelector('#needPrice');
-    return parseFloat(input.value);
+    return +input.value;
 }
 
-function getUpOrDown() {
-    let text = document.querySelector('.activeUpDown').innerHTML;
-    if(text === 'Жду вверх') {
-        return 'up';
-    } else {
-        return 'down';
-    }
+function getComment() {
+    const input = document.querySelector('#signalComment');
+    return input.value;
 }
 // INPUT SETTERS
 
 
-
-function checkWatching(upOrDown, prc, needPrice) {
-    if(upOrDown === 'up' && prc >= needPrice) {
-        return true;
-    }
-
-    if(upOrDown === 'down' && prc <= needPrice) {
-        return true;
-    }
-
-    return false;
-}
-
-
 function clearAll() {
-    signals.forEach(signal => {
-        if(signal !== '') {
-            signal.stream.close();
-        }
-    });
-    signals = [];
     Array.from(document.querySelectorAll('input')).forEach(inp => inp.value = '');
-    document.querySelector('.signals').innerHTML = '';
+    signals.forEach(signal => signal.stream.close());
 }
 
 
 // KEYHANDLERS
 
-
 document.addEventListener('keydown', (event) => {
     if(event.key === 'F2') {
         clearAll()
-    }
-})
-
-document.addEventListener('click', (event) => {
-    if(event.target.classList.contains('btnDown')) {
-        document.querySelector('.btnUp').classList.remove('activeUpDown');
-        event.target.classList.add('activeUpDown');
-    }
-
-    if(event.target.classList.contains('btnUp')) {
-        document.querySelector('.btnDown').classList.remove('activeUpDown');
-        event.target.classList.add('activeUpDown');
     }
 })
 
@@ -151,7 +60,21 @@ document.addEventListener('click', (event) => {
         const input = document.querySelector('#needPrice');
         input.value = +event.target.innerHTML;
     }
+
 })
+
+document.addEventListener('click', (event) => {
+    if(event.target.classList.contains('ticker')) {
+        let coin = trimNumberOfTicker(event.target.innerHTML);
+        new findBigVolume(coin, 10000);
+    }
+})
+
+document.querySelector('#btnStart').addEventListener('click', createSignal);
+
+// KEYHANDLERS
+
+
 
 
 function trimNumberOfTicker(ticker) {
@@ -159,10 +82,5 @@ function trimNumberOfTicker(ticker) {
     return ticker.slice(index + 2);
 }
 
-const btnStart = document.querySelector('#btnStart');
-btnStart.addEventListener('click', () => {
-    createSignal();
-});
 
-// KEYHANDLERS
-createTable();
+const table = new AllCoins();

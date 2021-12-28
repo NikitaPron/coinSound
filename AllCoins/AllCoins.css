@@ -1,0 +1,54 @@
+.allPrices {
+    display: flex;
+    gap: 50px;
+    flex-wrap: wrap;
+}
+
+.tickerDiv {
+    width: 400px;
+    display: flex;
+    gap: 15px;
+    border: 1px solid grey;
+    justify-content: flex-start;
+}
+
+.ticker {
+    font-weight: bold;
+    width: 200px;
+    cursor: pointer;
+}
+
+.ticker:hover {
+    background: rgb(151, 175, 221);
+}
+
+
+.price {
+    font-size: 20px;
+    flex-grow: 1;
+    cursor: pointer;
+}
+
+.price:hover {
+    background: rgb(151, 175, 221);
+}
+
+.percentUp {
+    font-weight: bold;
+    font-size: 18px;
+    color: rgb(44, 233, 44);
+}
+
+.percentDown {
+    color: rgb(223, 35, 35);
+    font-weight: bold;
+}
+
+
+@media only screen and (max-width: 600px) {
+    .allPrices {
+        width: 90%;
+        justify-content: center;
+        flex-direction: column-reverse;
+    }
+}

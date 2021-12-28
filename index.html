@@ -5,26 +5,32 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="AllCoins/AllCoins.css">
+    <link rel="stylesheet" href="/FindBigVolumes/FindBigVolumes.css">
+    <link rel="stylesheet" href="Signal/signal.css">
     <title>Document</title>
 </head>
 <body>
+
     <div class="hotKeys">
         F2 - Остановить и очистить </br>
         q - Остановить обновление всех монет </br>
         v - Сортировка по волатильности </br>
         h - Сортировка по + </br>
         l - Сортивка по - </br>
-        a - Сортировка по алфавиту
+        a - Сортировка по алфавиту </br>
+        z - Очистить уведомления по объёму
     </div>
+    <div class="allVolumes">
+
+    </div>
+
 
     <div id="app">
         <div class="hit">Для дробных чисел используйте ТОЧКУ в качестве разделителя</div>
         <input type="text" id="needCoin" placeholder="Введите пару. Например: ltcusdt">
         <input type="text" id="needPrice" placeholder="Введите цену. Например: 123.8">
-        <div class="btnsUpDown">
-            <div class="btnUp">Жду вверх</div>
-            <div class="btnDown">Жду вниз</div>
-        </div>
+        <input type="text" id="signalComment" placeholder="Комментарий">
         <div id="btnStart">Старт</div>
         <div class="signals">
         </div>
