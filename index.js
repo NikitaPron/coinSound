@@ -15,8 +15,6 @@ function createSignal() {
     });
 }
 
-
-
 // INPUT SETTERS
 function getNeedCoin() {
     const input = document.querySelector('#needCoin');
@@ -84,3 +82,9 @@ function trimNumberOfTicker(ticker) {
 
 
 const table = new AllCoins();
+document.addEventListener('keydown', (event) => {
+    if(event.key === 'Enter') {
+        const value = document.querySelector('#tablePrices__input-timeUpdate').value;
+        table.changeInterval(+value);
+    }
+})

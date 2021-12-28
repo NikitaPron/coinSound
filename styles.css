@@ -3,69 +3,9 @@ body {
     padding: 0;
     box-sizing: border-box;
     font-family: Arial, Helvetica, sans-serif;
-}
-
-
-#app {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-}
-
-input {
-    font-size: 45px;
-    color: #50e04b;
-}
-
-input::placeholder {
-    font-size: 20px;
-}
-
-.hit {
-    font-weight: bold;
-}
-
-#btnStart {
-    font-size: 20px;
-    color: #111;
-    background: rgb(243, 183, 183);
-    padding: 10px 20px;
-    border: 1px solid black;
-    cursor: pointer;
-}
-
-
-#btnStart {
-    width: 100px;
-    text-align: center;
-    background: rgb(119, 121, 221);
-}
-#btnStart:hover {
-    background-color: rgb(88, 91, 221);
+    width: 100%;
 }
 
 
 
 
-
-/*---------------------------------------------------------*/
-
-
-
-
-@media only screen and (max-width: 600px) {
-    #needPrice, #needCoin {
-        width: 90%;
-        font-size: 29px;
-    }
-
-    .signals {
-        font-size: 20px;
-    }
-
-    input::placeholder {
-        font-size: 15px;
-    }
-}

@@ -46,7 +46,12 @@ export class AllCoins {
     constructor() {
         this.createStream();
         setInterval(this.createTable, 1000);
-        setInterval(savePrices, 60000);
+        this.intervalFunc = setInterval(savePrices, 10000);
+    }
+
+    changeInterval(interval) {
+        clearInterval(this.intervalFunc);
+        this.intervalFunc = setInterval(savePrices, interval*1000);
     }
     
 
@@ -126,7 +131,6 @@ export function getCurrPriceCoin(coin) {
     let need = coinsArr.find(item => item.coin === coin);
     return need.price;
 }
-
 
 
 

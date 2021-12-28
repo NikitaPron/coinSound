@@ -8,10 +8,9 @@
     <link rel="stylesheet" href="AllCoins/AllCoins.css">
     <link rel="stylesheet" href="/FindBigVolumes/FindBigVolumes.css">
     <link rel="stylesheet" href="Signal/signal.css">
-    <title>Document</title>
+    <title>Криптосигнал</title>
 </head>
 <body>
-
     <div class="hotKeys">
         F2 - Остановить и очистить </br>
         q - Остановить обновление всех монет </br>
@@ -25,21 +24,22 @@
 
     </div>
 
-
-    <div id="app">
-        <div class="hit">Для дробных чисел используйте ТОЧКУ в качестве разделителя</div>
-        <input type="text" id="needCoin" placeholder="Введите пару. Например: ltcusdt">
-        <input type="text" id="needPrice" placeholder="Введите цену. Например: 123.8">
-        <input type="text" id="signalComment" placeholder="Комментарий">
-        <div id="btnStart">Старт</div>
+    <div class="createSignal">
+        <div class="createSignal__hit">Для дробных чисел используйте ТОЧКУ в качестве разделителя</div>
+        <input type="text" id="needCoin" class="createSignal__input" placeholder="Введите пару. Например: ltcusdt">
+        <input type="text" id="needPrice" class="createSignal__input" placeholder="Введите цену. Например: 123.8">
+        <input type="text" id="signalComment" class="createSignal__input" placeholder="Комментарий">
+        <div id="btnStart" class="createSignal__btn-create">Старт</div>
         <div class="signals">
         </div>
-
-        <div class="allPrices">
-
-        </div>
-
     </div>
+
+
+    <div class="tablePrices">
+        <input type="text" id="tablePrices__input-timeUpdate" class="tablePrices__input-timeUpdate" placeholder="Время обновления в сек."></input>
+        <div class="allPrices"></div>
+    </div>
+
 
 
     <script type="module" src="index.js"></script>
