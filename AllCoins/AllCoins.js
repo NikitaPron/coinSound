@@ -46,7 +46,7 @@ export class AllCoins {
     constructor() {
         this.createStream();
         setInterval(this.createTable, 1000);
-        this.intervalFunc = setInterval(savePrices, 10000);
+        this.intervalFunc = setInterval(savePrices, 300000);
     }
 
     changeInterval(interval) {

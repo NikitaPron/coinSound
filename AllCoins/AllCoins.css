@@ -1,9 +1,20 @@
 .tablePrices {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    align-items: center;
+    gap: 15px;
 }
+
+.tablePrices__input-timeUpdate {
+    font-size: 20px;
+    width: 100px;
+    height: 40px;
+    cursor: pointer;
+    border: 1px solid #D8093A;
+    border-radius: 5px;
+    padding: 3px;
+    outline: 0;
+}
+
 
 .allPrices {
     display: flex;
@@ -54,8 +65,10 @@
 
 @media only screen and (max-width: 600px) {
     .allPrices {
-        width: 90%;
-        justify-content: center;
         flex-direction: column-reverse;
+    }
+
+    .tablePrices {
+        align-items: center;
     }
 }
