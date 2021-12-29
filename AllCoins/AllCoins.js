@@ -51,7 +51,7 @@ export class AllCoins {
 
     changeInterval(interval) {
         clearInterval(this.intervalFunc);
-        this.intervalFunc = setInterval(savePrices, interval*1000);
+        this.intervalFunc = setInterval(savePrices, interval);
     }
     
 

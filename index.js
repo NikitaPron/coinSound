@@ -82,9 +82,6 @@ function trimNumberOfTicker(ticker) {
 
 
 const table = new AllCoins();
-document.addEventListener('keydown', (event) => {
-    if(event.key === 'Enter') {
-        const value = document.querySelector('#tablePrices__input-timeUpdate').value;
-        table.changeInterval(+value);
-    }
+document.querySelector('#tablePrices__input-timeUpdate').addEventListener('change', (event) => {
+        table.changeInterval(+event.target.value);
 })

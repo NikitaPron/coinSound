@@ -33,7 +33,15 @@
 
 
     <div class="tablePrices">
-        <input type="text" id="tablePrices__input-timeUpdate" class="tablePrices__input-timeUpdate" placeholder="Время обновления в сек."></input>
+        <select id='tablePrices__input-timeUpdate' size="1">
+            <option value="10000" selected="selected">10сек</option>
+            <option value="30000">30сек</option>
+            <option value="60000">1мин</option>
+            <option value="120000">2мин</option>
+            <option value="180000">3мин</option>
+            <option value="240000">4мин</option>
+            <option value="300000">5мин</option>
+        </select>
         <div class="allPrices"></div>
     </div>
 
