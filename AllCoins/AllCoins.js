@@ -1,34 +1,41 @@
-import {my} from './myCoins.js';
+import {my, allFuturesCoins} from './myCoins.js';
+import {Analise} from '../Analise/Analise.js';
 
 
 const coinsArr = [];
 let saves = [];
+const anl = new Analise();
 
 function savePrices() {
     coinsArr.forEach(item => {
         const old = saves.find(oldy => oldy.coin === item.coin);
         if(old !== undefined) {
-            let procent = ((old.price - item.price) / item.price * 100).toFixed(2);
+            let procent = ((item.price - old.price) / old.price * 100).toFixed(2);
             item.proc = procent;
         }
     })
 
     saves = coinsArr.map(a => ({...a}));
+
+    anl.setData(coinsArr);
+    anl.showData();
 }
 
-document.addEventListener('keydown', (event) => {
-    if(event.key === 'h') sortHigh();
-    if(event.key === 'v') sortMoving();
-    if(event.key === 'l') sortLow();
-    if(event.key === 'a') sortAlphabet();
+document.querySelector('#sortTable').addEventListener('change', (event) => {
+    if(event.target.value === 'Alphabet') sortTable = sortAlphabet;
+    if(event.target.value === 'Moving') sortTable = sortMoving;
+    if(event.target.value === 'High') sortTable = sortHigh;
+    if(event.target.value === 'Low') sortTable = sortLow;
 })
 
+const sortTable = sortAlphabet;
 
 function sortAlphabet() {
     coinsArr.sort((a, b) => a.coin > b.coin ? 1 : -1);
 }
 
 function sortMoving() {
+    console.log('sortmoving');
     coinsArr.sort((a, b) => Math.abs(b.proc) - Math.abs(a.proc));
 }
 
@@ -58,16 +65,16 @@ export class AllCoins {
     createStream() {
         const stream = new WebSocket(`wss://stream.binance.com:9443/ws/!bookTicker`);
         document.addEventListener('keydown', (event) => {
-            if(event.key === 'q') this.stream.close();
+            if(event.key === 'q') stream.close();
         })
 
         stream.onmessage = (event) => {
             const data = JSON.parse(event.data);
             const currCoin = data.s;
             const coinPrice = +data.b;
-
-
-            if(currCoin.endsWith('USDT') && !currCoin.endsWith('UPUSDT') && !currCoin.endsWith('DOWNUSDT')) {
+    
+    
+            if(allFuturesCoins.includes(currCoin)) {
             const index = this.haveInTable(currCoin);
                 if(index === -1) {
                     coinsArr.push(this.createNewCoin(currCoin, coinPrice))
@@ -77,7 +84,9 @@ export class AllCoins {
             }
         }
 
-        return stream;
+        stream.onclose = function(event) {
+            setTimeout(this.createStream, 3000);
+        }
     }
 
     createNewCoin(coin, price) {
@@ -93,7 +102,7 @@ export class AllCoins {
     }
 
     createTable() {
-        sortAlphabet();
+        sortTable();
         const allPrices = document.querySelector('.allPrices');
         allPrices.innerHTML = '';
 

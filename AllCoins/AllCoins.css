@@ -15,6 +15,10 @@
     outline: 0;
 }
 
+.tablePrices__input-sort {
+    width: 290px;
+}
+
 
 .allPrices {
     display: flex;

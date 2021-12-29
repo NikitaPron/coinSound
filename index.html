@@ -11,10 +11,6 @@
     <div class="hotKeys">
         F2 - Остановить и очистить </br>
         q - Остановить обновление всех монет </br>
-        v - Сортировка по волатильности </br>
-        h - Сортировка по + </br>
-        l - Сортивка по - </br>
-        a - Сортировка по алфавиту </br>
         z - Очистить уведомления по объёму
     </div>
     <div class="allVolumes">
@@ -41,6 +37,13 @@
             <option value="180000">3мин</option>
             <option value="240000">4мин</option>
             <option value="300000" selected="selected">5мин</option>
+        </select>
+
+        <select id="sortTable" class="tablePrices__input-timeUpdate tablePrices__input-sort" size="1">
+            <option value="Alphabet" selected="selected" >По алфавиту</option>
+            <option value="Moving" >По волатильности</option>
+            <option value="High" >По процентному росту</option>
+            <option value="Low" >По процентному падению</option>
         </select>
         <div class="allPrices"></div>
     </div>
