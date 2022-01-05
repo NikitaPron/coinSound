@@ -18,41 +18,15 @@ function savePrices() {
     saves = coinsArr.map(a => ({...a}));
 
     anl.setData(coinsArr);
-    anl.showData();
 }
-
-document.querySelector('#sortTable').addEventListener('change', (event) => {
-    if(event.target.value === 'Alphabet') sortTable = sortAlphabet;
-    if(event.target.value === 'Moving') sortTable = sortMoving;
-    if(event.target.value === 'High') sortTable = sortHigh;
-    if(event.target.value === 'Low') sortTable = sortLow;
-})
-
-const sortTable = sortAlphabet;
-
-function sortAlphabet() {
-    coinsArr.sort((a, b) => a.coin > b.coin ? 1 : -1);
-}
-
-function sortMoving() {
-    console.log('sortmoving');
-    coinsArr.sort((a, b) => Math.abs(b.proc) - Math.abs(a.proc));
-}
-
-function sortHigh() {
-    coinsArr.sort((a, b) => b.proc - a.proc);
-}
-
-function sortLow() {
-    coinsArr.sort((a, b) => a.proc - b.proc);
-}
-
 
 export class AllCoins {
 
     constructor() {
         this.createStream();
         setInterval(this.createTable, 1000);
+
+        setTimeout(savePrices, 3000);
         this.intervalFunc = setInterval(savePrices, 300000);
     }
 
@@ -85,7 +59,8 @@ export class AllCoins {
         }
 
         stream.onclose = function(event) {
-            setTimeout(this.createStream, 3000);
+            console.log('STREM FROM MAIN TABLE CLOSED' + event.code + '>>>' + event.reason);
+            document.querySelector('#START_STREAM').click();
         }
     }
 
@@ -140,6 +115,36 @@ export function getCurrPriceCoin(coin) {
     let need = coinsArr.find(item => item.coin === coin);
     return need.price;
 }
+
+
+
+// SORT //
+document.querySelector('#sortTable').addEventListener('change', (event) => {
+    if(event.target.value === 'Alphabet') sortTable = sortAlphabet;
+    if(event.target.value === 'Moving') sortTable = sortMoving;
+    if(event.target.value === 'High') sortTable = sortHigh;
+    if(event.target.value === 'Low') sortTable = sortLow;
+})
+
+let sortTable = sortAlphabet;
+
+function sortAlphabet() {
+    coinsArr.sort((a, b) => a.coin > b.coin ? 1 : -1);
+}
+
+function sortMoving() {
+    coinsArr.sort((a, b) => Math.abs(b.proc) - Math.abs(a.proc));
+}
+
+function sortHigh() {
+    coinsArr.sort((a, b) => b.proc - a.proc);
+}
+
+function sortLow() {
+    coinsArr.sort((a, b) => a.proc - b.proc);
+}
+// SORT //
+
 
 
 

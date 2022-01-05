@@ -85,3 +85,8 @@ const table = new AllCoins();
 document.querySelector('#tablePrices__input-timeUpdate').addEventListener('change', (event) => {
         table.changeInterval(+event.target.value);
 })
+
+
+document.querySelector('#START_STREAM').addEventListener('click', () => {
+    table.createStream();
+});
