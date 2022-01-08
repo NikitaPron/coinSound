@@ -1,3 +1,5 @@
+import * as Storage from './storage.js';
+
 const audio = new Audio('sound.wav');
 export class Signal {
     
@@ -7,6 +9,7 @@ export class Signal {
         this.stream = this.createStream(coin);
         this.div = this.createDiv();
         this.comment = comment;
+        this.percent;
     }
 
     
@@ -32,7 +35,8 @@ export class Signal {
     }
 
     updateInfo() {
-        this.div.innerHTML = `${this.coin.toUpperCase()}: ${this.currentPrice} (до цены ${this.needPrice}: ${getPercent(this.currentPrice, this.needPrice)}%)     (${this.comment})`;
+        this.percent = getPercent(this.currentPrice, this.needPrice);
+        this.div.innerHTML = `${this.coin.toUpperCase()}: ${this.currentPrice} (до цены ${this.needPrice}: ${this.percent}%)     (${this.comment})`;
         if(this.isSignalCompleted()) {
             this.completeSignal();
         }

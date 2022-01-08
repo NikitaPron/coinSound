@@ -8,13 +8,9 @@
     <title>Криптосигнал</title>
 </head>
 <body>
+
     <div class="hotKeys">
         F2 - Остановить и очистить </br>
-        q - Остановить обновление всех монет </br>
-        z - Очистить уведомления по объёму
-    </div>
-    <div class="allVolumes">
-
     </div>
 
     <div class="createSignal">
@@ -26,31 +22,6 @@
         <div class="signals">
         </div>
     </div>
-
-
-    <div class="tablePrices">
-        <select id="tablePrices__input-timeUpdate" class="tablePrices__input-timeUpdate" size="1">
-            <option value="10000" >10сек</option>
-            <option value="30000">30сек</option>
-            <option value="60000">1мин</option>
-            <option value="120000">2мин</option>
-            <option value="180000">3мин</option>
-            <option value="240000">4мин</option>
-            <option value="300000" selected="selected">5мин</option>
-        </select>
-
-        <select id="sortTable" class="tablePrices__input-timeUpdate tablePrices__input-sort" size="1">
-            <option value="Alphabet" selected="selected" >По алфавиту</option>
-            <option value="Moving" >По волатильности</option>
-            <option value="High" >По процентному росту</option>
-            <option value="Low" >По процентному падению</option>
-        </select>
-        <div class="allPrices"></div>
-    </div>
-
-    <button id='START_STREAM'>START STREAM</button>
-
-
 
     <script type="module" src="index.js"></script>
 </body>

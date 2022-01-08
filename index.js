@@ -1,18 +1,25 @@
-import {AllCoins} from './AllCoins/AllCoins.js';
-import {findBigVolume} from './FindBigVolumes/findBigVolume.js';
 import { Signal } from './Signal/Signal.js';
-import * as storage from './storage.js';
+import * as Storage from './storage.js';
 
 
-const signals = [];
+const signals = Storage.getSignals() || [];
+
+if(signals.length > 0) {
+    signals.forEach(signal => {
+        new Signal(signal.coin, signal.needPrice, signal.comment);
+    });
+}
 
 function createSignal() {
     const signal = new Signal(getNeedCoin(), getNeedPrice(), getComment());
+    console.log('dasda');
     signals.push({
         coin: signal.coin,
         needPrice: signal.needPrice,
         comment: signal.comment,
     });
+
+    Storage.saveSignals(signals);
 }
 
 // INPUT SETTERS
@@ -43,7 +50,8 @@ function clearAll() {
 
 document.addEventListener('keydown', (event) => {
     if(event.key === 'F2') {
-        clearAll()
+        clearAll();
+        Storage.clearSignals();
     }
 })
 
@@ -61,12 +69,6 @@ document.addEventListener('click', (event) => {
 
 })
 
-document.addEventListener('click', (event) => {
-    if(event.target.classList.contains('ticker')) {
-        let coin = trimNumberOfTicker(event.target.innerHTML);
-        new findBigVolume(coin, 10000);
-    }
-})
 
 document.querySelector('#btnStart').addEventListener('click', createSignal);
 
@@ -74,19 +76,7 @@ document.querySelector('#btnStart').addEventListener('click', createSignal);
 
 
 
-
 function trimNumberOfTicker(ticker) {
     let index = ticker.split('').findIndex(item => item === '.');
     return ticker.slice(index + 2);
 }
-
-
-const table = new AllCoins();
-document.querySelector('#tablePrices__input-timeUpdate').addEventListener('change', (event) => {
-        table.changeInterval(+event.target.value);
-})
-
-
-document.querySelector('#START_STREAM').addEventListener('click', () => {
-    table.createStream();
-});
