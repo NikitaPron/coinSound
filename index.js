@@ -1,25 +1,12 @@
-import { Signal } from './Signal/Signal.js';
-import * as Storage from './storage.js';
+import { signals, Signal } from './Signal/Signal.js';
+import * as Storage from '/storage.js';
 
 
-const signals = Storage.getSignals() || [];
 
-if(signals.length > 0) {
-    signals.forEach(signal => {
-        new Signal(signal.coin, signal.needPrice, signal.comment);
-    });
-}
+
 
 function createSignal() {
-    const signal = new Signal(getNeedCoin(), getNeedPrice(), getComment());
-    console.log('dasda');
-    signals.push({
-        coin: signal.coin,
-        needPrice: signal.needPrice,
-        comment: signal.comment,
-    });
-
-    Storage.saveSignals(signals);
+    new Signal(getNeedCoin(), getNeedPrice(), getComment(), getId());
 }
 
 // INPUT SETTERS
@@ -42,7 +29,6 @@ function getComment() {
 
 function clearAll() {
     Array.from(document.querySelectorAll('input')).forEach(inp => inp.value = '');
-    signals.forEach(signal => signal.stream.close());
 }
 
 
@@ -79,4 +65,20 @@ document.querySelector('#btnStart').addEventListener('click', createSignal);
 function trimNumberOfTicker(ticker) {
     let index = ticker.split('').findIndex(item => item === '.');
     return ticker.slice(index + 2);
+}
+
+
+
+function getId() {
+    
+    const symbols = '1234567890qwertyuiopasdfghjklzxcvbnm';
+    const newId = new Array(10).fill(1).map(() => {
+        return symbols[getRandomInt(0, symbols.length)];
+    }).join('');
+
+    return newId;
+
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
 }

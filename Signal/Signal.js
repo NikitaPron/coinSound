@@ -1,18 +1,40 @@
-import * as Storage from './storage.js';
+import * as Storage from '../storage.js'
+
+export const signals = [];
+
+
+
 
 const audio = new Audio('sound.wav');
 export class Signal {
     
-    constructor(coin, needPrice, comment) {
+    constructor(coin, needPrice, comment, id) {
+        this.id = id;
         this.coin = coin;
         this.needPrice = needPrice;
         this.stream = this.createStream(coin);
         this.div = this.createDiv();
         this.comment = comment;
         this.percent;
+
+
+        signals.push({
+            id,
+            coin,
+            needPrice,
+            comment,
+        })
+
+        Storage.saveSignals(signals);
     }
 
-    
+    deleteSignal() {
+        this.stream.close();
+        const index = signals.findIndex(item => item.id === this.id);
+        this.div.remove();
+        signals.splice(index, 1);
+        Storage.saveSignals(signals);
+    }
 
     isSignalCompleted() {
         if(this.trend === 'UP' && this.currentPrice >= this.needPrice) {
@@ -27,16 +49,19 @@ export class Signal {
     }
 
     isDown(currentPrice, needPrice) {
-        if(currentPrice < needPrice) {
-            return 'UP'
-        } else {
-            return 'DOWN';
-        }
+        return currentPrice < needPrice ? 'UP': 'DOWN';
     }
 
     updateInfo() {
         this.percent = getPercent(this.currentPrice, this.needPrice);
-        this.div.innerHTML = `${this.coin.toUpperCase()}: ${this.currentPrice} (до цены ${this.needPrice}: ${this.percent}%)     (${this.comment})`;
+        this.div.children[0].innerHTML = 
+        
+        `<span class='coinName'>${this.coin.toUpperCase()}</span>:
+         <span class='currentPrice'>${this.currentPrice}</span>
+         (до цены <span class='needPrice'>${this.needPrice}</span>:
+         <span class='percentTo'>${this.percent}%</span>)
+         (<span class='signalComment'>${this.comment}</span>)`;
+
         if(this.isSignalCompleted()) {
             this.completeSignal();
         }
@@ -73,14 +98,13 @@ export class Signal {
         btnDelete.innerHTML = 'Delete';
 
         btnDelete.addEventListener('click', () => {
-            this.stream.close();
-            signal.remove();
-        })
+            this.deleteSignal();
+        });
 
         signal.append(signalText, btnDelete);
         document.querySelector('.signals').append(signal);
 
-        return signalText;
+        return signal;
     }
 }
 
@@ -89,3 +113,9 @@ function getPercent(currPrice, needPrice) {
     const percent = ((needPrice - currPrice) / currPrice * 100).toFixed(3);
     return percent;
 }
+
+
+(function initSignalsFromStorage() {
+    const storage = Storage.getSignals() || [];
+    if(storage.length > 0) storage.forEach(signal => new Signal(signal.coin, signal.needPrice, signal.comment, signal.id));
+})()
