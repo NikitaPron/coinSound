@@ -7,26 +7,31 @@
 }
 
 .createSignal__input {
+    outline: none;
+    text-align: center;
+    padding: 10px;
     font-size: 45px;
-    color: #50e04b;
+    color: #2eaa2a;
+    border:0;
+    box-shadow:0 0 5px 4px rgba(0,0,0, 0.1);
 }
 
 .createSignal__input::placeholder {
-    font-size: 20px;
+    font-size: 15px;
 }
 
 .createSignal__btn-create {
-    font-size: 20px;
+    padding: 10px 50px;
+    font-size: 23px;
     color: #111;
     border: 1px solid black;
-    width: 100px;
-    text-align: center;
-    padding: 10px 20px;
     cursor: pointer;
-    background: rgb(119, 121, 221);
+    background: rgb(127, 129, 248);
+    transition: all 0.3s;
 }
 .createSignal__btn-create:hover {
-    background-color: rgb(88, 91, 221);
+    background-color: rgb(51, 54, 235);
+    transform: rotate(2deg);
 }
 
 .signals {
@@ -34,6 +39,7 @@
     flex-direction: column;
     font-size: 35px;
     color: rgb(117, 117, 218);
+    gap: 10px;
 }
 
 
@@ -47,16 +53,22 @@
 
 
 .btnDeleteSignal {
-    border: 0;
-    padding: 10px 30px;
+    padding: 10px 25px;
     font-size: 18px;
-    background-color: rgb(236, 108, 61);
+    background-color: rgb(221, 155, 132);
     border: 1px solid black;
+    border-radius: 3px;
     cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btnDeleteSignal:hover {
+    background-color: rgb(236, 94, 42);
+    transform: rotate(2deg);
 }
 
 .completedSignal {
-    background-color:rgb(230, 142, 107);
+    background-color:rgb(177, 174, 173, 0.5);
 }
 
 

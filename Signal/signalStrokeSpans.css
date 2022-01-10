@@ -1,0 +1,28 @@
+.signalText {
+    font-size: 22px;
+}
+
+.coinName {
+    color: rgb(231, 139, 116);
+    font-size: 28px;
+}
+
+.currentPrice {
+    color: black;
+    font-size: 25px;
+}
+
+.needPrice {
+    color: darksalmon;
+    font-size: 25px;
+}
+
+.percentTo {
+    color: gray;
+    font-size: 28px;
+}
+
+.signalComment {
+    color: rgb(196, 103, 196);
+    font-size: 25px;
+}

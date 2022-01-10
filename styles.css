@@ -1,14 +1,17 @@
-@import url('/AllCoins/AllCoins.css');
-@import url('/FindBigVolumes/FindBigVolumes.css');
-@import url('/Signal/signal.css');
+@import url('./Signal/signal.css');
+@import url('./Signal/signalStrokeSpans.css');
 
 body {
     margin: 0;
-    padding: 0;
+    padding: 5px;
     box-sizing: border-box;
     font-family: Arial, Helvetica, sans-serif;
     width: 100%;
 }
+
+*, *:before, *:after {
+    box-sizing: border-box;
+  }
 
 
 

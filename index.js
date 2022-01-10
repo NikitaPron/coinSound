@@ -1,18 +1,12 @@
-import {AllCoins} from './AllCoins/AllCoins.js';
-import {findBigVolume} from './FindBigVolumes/findBigVolume.js';
-import { Signal } from './Signal/Signal.js';
-import * as storage from './storage.js';
+import {Signal } from './Signal/Signal.js';
+import * as Storage from './Storage/storage.js';
 
 
-const signals = [];
+
+
 
 function createSignal() {
-    const signal = new Signal(getNeedCoin(), getNeedPrice(), getComment());
-    signals.push({
-        coin: signal.coin,
-        needPrice: signal.needPrice,
-        comment: signal.comment,
-    });
+    new Signal(getNeedCoin(), getNeedPrice(), getComment(), getId());
 }
 
 // INPUT SETTERS
@@ -35,7 +29,6 @@ function getComment() {
 
 function clearAll() {
     Array.from(document.querySelectorAll('input')).forEach(inp => inp.value = '');
-    signals.forEach(signal => signal.stream.close());
 }
 
 
@@ -43,7 +36,8 @@ function clearAll() {
 
 document.addEventListener('keydown', (event) => {
     if(event.key === 'F2') {
-        clearAll()
+        clearAll();
+        Storage.clearSignals();
     }
 })
 
@@ -61,17 +55,10 @@ document.addEventListener('click', (event) => {
 
 })
 
-document.addEventListener('click', (event) => {
-    if(event.target.classList.contains('ticker')) {
-        let coin = trimNumberOfTicker(event.target.innerHTML);
-        new findBigVolume(coin, 10000);
-    }
-})
 
 document.querySelector('#btnStart').addEventListener('click', createSignal);
 
 // KEYHANDLERS
-
 
 
 
@@ -81,7 +68,17 @@ function trimNumberOfTicker(ticker) {
 }
 
 
-const table = new AllCoins();
-document.querySelector('#tablePrices__input-timeUpdate').addEventListener('change', (event) => {
-        table.changeInterval(+event.target.value);
-})
+
+function getId() {
+    
+    const symbols = '1234567890qwertyuiopasdfghjklzxcvbnm';
+    const newId = new Array(10).fill(1).map(() => {
+        return symbols[getRandomInt(0, symbols.length)];
+    }).join('');
+
+    return newId;
+
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+}
