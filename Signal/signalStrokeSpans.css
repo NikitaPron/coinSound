@@ -23,7 +23,6 @@
 }
 
 .signalComment {
-    color: magenta;
-    opacity: 0.5;
+    color: rgb(196, 103, 196);
     font-size: 25px;
 }

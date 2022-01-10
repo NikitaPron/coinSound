@@ -1,5 +1,5 @@
-@import url('/Signal/signal.css');
-@import url('/Signal/signalStrokeSpans.css');
+@import url('./Signal/signal.css');
+@import url('./Signal/signalStrokeSpans.css');
 
 body {
     margin: 0;
