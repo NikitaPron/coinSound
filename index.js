@@ -1,5 +1,5 @@
-import { signals, Signal } from './Signal/Signal.js';
-import * as Storage from './storage.js';
+import {Signal } from './Signal/Signal.js';
+import * as Storage from './Storage/storage.js';
 
 
 

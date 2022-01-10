@@ -1,4 +1,4 @@
-import * as Storage from '../storage.js'
+import * as Storage from '../Storage/storage.js'
 
 export const signals = [];
 
