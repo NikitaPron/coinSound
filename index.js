@@ -3,13 +3,7 @@ import {findBigVolume} from './FindBigVolumes/findBigVolume.js';
 import { Signal } from './Signal/Signal.js';
 import * as storage from './storage.js';
 
-fetch('http://f0655559.xsph.ru/')
-  .then((response) => {
-    return response.json();
-  })
-  .then((data) => {
-    console.log(data);
-  });
+
 
 const signals = [];
 
